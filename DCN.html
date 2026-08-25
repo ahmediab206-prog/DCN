@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCN - بوابة صرف الميزانية للعملاء</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0B0E11;
+            --card-bg: #161B22;
+            --primary-teal: #00BBB4;
+            --accent-yellow: #F5AB35;
+            --text-light: #F0F6FC;
+            --text-muted: #8B949E;
+            --border-color: #30363D;
+            --danger-red: #E55353;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-teal);
+            letter-spacing: 1px;
+        }
+
+        .logo-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .system-title {
+            font-size: 18px;
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .search-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-box label {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background-color: #0D1117;
+            color: var(--primary-teal);
+            border: 1px solid var(--primary-teal);
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, rgba(0, 187, 180, 0.1) 0%, rgba(245, 171, 53, 0.05) 100%);
+            border: 1px solid var(--primary-teal);
+            text-align: center;
+        }
+
+        .balance-title {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary-teal);
+            margin: 10px 0;
+        }
+
+        .balance-amount.negative {
+            color: var(--danger-red);
+        }
+
+        .client-name-display {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-yellow);
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .details-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .details-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .details-table td, .details-table th {
+            padding: 14px 8px;
+            font-size: 15px;
+        }
+
+        .details-table th {
+            color: var(--primary-teal);
+            text-align: right;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .details-table .label {
+            color: var(--text-muted);
+        }
+
+        .details-table .value {
+            font-weight: 700;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .val-in { color: #2EA043; }
+        .val-out { color: var(--danger-red); }
+        .val-adj { color: var(--accent-yellow); }
+
+        .extra-table-container {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            margin-bottom: 12px;
+        }
+
+        .extra-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .extra-table th {
+            background-color: #0D1117;
+            color: var(--primary-teal);
+            padding: 12px 16px;
+            text-align: right;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .extra-table td {
+            padding: 14px 16px;
+            color: var(--text-light);
+            font-size: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .extra-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div>
+                <div class="logo-title">DCN</div>
+                <div class="logo-sub">DREAM CATCHERS NETWORK</div>
+            </div>
+        </div>
+        <div class="system-title">بوابة صرف الميزانية للعملاء</div>
+    </header>
+
+    <div class="container">
+        <!-- البحث واختيار العميل -->
+        <div class="search-box">
+            <label for="customerSelect">اختر اسم الشركة / العميل:</label>
+            <select id="customerSelect">
+                <option value="eduspace">Eduspace</option>
+                <option value="education">Education</option>
+                <option value="coworkspace">Coworkspace</option>
+            </select>
+        </div>
+
+        <!-- شبكة العرض الرئيسية -->
+        <div class="dashboard-grid">
+            <!-- كارت صافي الرصيد -->
+            <div class="card balance-card">
+                <div>
+                    <div class="balance-title">صافي الرصيد المتبقي (Diff)</div>
+                    <div class="client-name-display" id="clientName">Eduspace</div>
+                </div>
+                <div class="balance-amount" id="netBalance">↑ 113.97 EGP</div>
+                <div style="font-size: 12px; color: var(--text-muted);">أغسطس 2026</div>
+            </div>
+
+            <!-- جدول ملخص الحسابات -->
+            <div class="card">
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>الأجمل</th>
+                            <th>الكلية</th>
+                            <th>غيرانت IN عمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="label">1. إجمالي الإيداعات (Total IN)</td>
+                            <td class="value val-in">Yes</td>
+                            <td class="value val-in" id="totalIn">16,210 EGP</td>
+                        </tr>
+                        <tr>
+                            <td class="label">2. إجمالي الصرف والعمولات (Tracker/VAT)</td>
+                            <td class="value val-out">Yes</td>
+                            <td class="value val-out" id="totalOut">15,281.83 EGP</td>
+                        </tr>
+                        <tr>
+                            <td class="label">3. التسويات اليدوية (In-Out)</td>
+                            <td class="value val-adj">0 EGP</td>
+                            <td class="value val-adj" id="totalAdj">-928 EGP</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- جدول التعديلات الإضافي (Customer In-Out) -->
+        <div class="extra-table-container">
+            <div class="section-title">تعديلات "Customer In-Out"</div>
+            <table class="extra-table">
+                <thead>
+                    <tr>
+                        <th>قيمة التعديل</th>
+                        <th>نوع التعديل</th>
+                        <th>اسم جهة التعديل / المسؤول</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="val-adj" style="font-weight: 700;">-928 EGP</td>
+                        <td>تعديل يدوي</td>
+                        <td style="font-weight: 700; color: var(--primary-teal);">مريم</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        DREAM CATCHERS NETWORK © 2026 - جميع الحقوق محفوظة
+    </footer>
+
+</body>
+</html>
